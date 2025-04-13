@@ -1,4 +1,4 @@
-https://nj.vanas.gihubt.io/MAS-Bootstrap
+https://njvanas.gihub.io/MAS-Bootstrap
 =================
 
-This repository contains `irm https://nj.vanas.gihubt.io/MAS-Bootstrap | iex` loader script.
+This repository contains `irm https://njvanas.gihub.io/MAS-Bootstrap | iex` loader script.
