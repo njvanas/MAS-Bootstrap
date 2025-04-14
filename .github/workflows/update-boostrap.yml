@@ -1,0 +1,43 @@
+name: Auto Update MAS Bootstrap Script
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'  # Runs daily at 03:00 UTC
+
+jobs:
+  update-bootstrap:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Bootstrap Repo
+        uses: actions/checkout@v3
+
+      - name: Fetch latest commit hash from MAS fork
+        id: get_commit
+        run: |
+          LATEST_COMMIT=$(curl -s https://api.github.com/repos/njvanas/Microsoft-Activation-Scripts/commits/master | jq -r '.sha')
+          echo "LATEST_COMMIT=$LATEST_COMMIT" >> $GITHUB_ENV
+
+      - name: Download MAS_AIO.cmd from latest commit
+        run: |
+          curl -s -L -o MAS_AIO.cmd "https://raw.githubusercontent.com/njvanas/Microsoft-Activation-Scripts/$LATEST_COMMIT/MAS/All-In-One-Version-KL/MAS_AIO.cmd"
+
+      - name: Calculate SHA256
+        id: hash
+        run: |
+          HASH=$(sha256sum MAS_AIO.cmd | cut -d ' ' -f 1)
+          echo "FILE_HASH=$HASH" >> $GITHUB_ENV
+
+      - name: Update index.html with new commit hash and SHA
+        run: |
+          sed -i -E "s@(https://raw\.githubusercontent\.com/njvanas/Microsoft-Activation-Scripts/)[a-f0-9]{40}@\1$LATEST_COMMIT@g" index.html
+          sed -i -E "s@releaseHash\s*=\s*'[^']+'@releaseHash = '$FILE_HASH'@g" index.html
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add index.html
+          git commit -m "Update MAS commit and hash ($LATEST_COMMIT)" || echo "No changes to commit"
+          git push
