@@ -28,7 +28,7 @@ function CheckFile {
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $URLs = @(
-  'https://raw.githubusercontent.com/njvanas/Microsoft-Activation-Scripts/cc1d3d3e47d3bdb660812f4622ab86f130045ec9/MAS/All-In-One-Version-KL/MAS_AIO.cmd'
+  'https://raw.githubusercontent.com/njvanas/Microsoft-Activation-Scripts/f19049c3814c9e51490ce1058b73266437f7075d/MAS/All-In-One-Version-KL/MAS_AIO.cmd'
 )
 
 foreach ($URL in $URLs | Sort-Object { Get-Random }) {
