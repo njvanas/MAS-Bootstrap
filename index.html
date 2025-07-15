@@ -28,7 +28,7 @@ function CheckFile {
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $URLs = @(
-  'https://raw.githubusercontent.com/njvanas/Microsoft-Activation-Scripts/a61af67e545adb332d5013203cb253b264bc7641/MAS/All-In-One-Version-KL/MAS_AIO.cmd'
+  'https://raw.githubusercontent.com/njvanas/Microsoft-Activation-Scripts/null/MAS/All-In-One-Version-KL/MAS_AIO.cmd'
 )
 
 foreach ($URL in $URLs | Sort-Object { Get-Random }) {
@@ -43,7 +43,7 @@ if (-not $response) {
 }
 
 # Verify script integrity
-$releaseHash = '919f17b46bf62169e8811201f75efdf1d5c1504321b78a7b0fb47c335ecbc1b0'
+$releaseHash = 'd5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed'
 $stream = New-Object IO.MemoryStream
 $writer = New-Object IO.StreamWriter $stream
 $writer.Write($response)
