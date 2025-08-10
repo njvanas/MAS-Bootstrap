@@ -120,7 +120,7 @@ if (-not $args) {
     }
 
     if ($psv -lt 3) {
-        $p = saps -FilePath $env:ComSpec -ArgumentList "/c """"$FilePath"" -el $args""" -Verb RunAs -PassThru
+        $p = saps -FilePath $env:ComSpec -ArgumentList "/c """"$FilePath"" -el -qedit $args""" -Verb RunAs -PassThru
         $p.WaitForExit()
     }
     else {
