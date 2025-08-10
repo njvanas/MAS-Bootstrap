@@ -120,6 +120,10 @@ if (-not $args) {
     }
 
     if ($psv -lt 3) {
+        if (Test-Path "$env:SystemRoot\Sysnative") {
+            Write-Warning "Command is running with x86 Powershell, run it with x64 Powershell instead..."
+            return
+        }
         $p = saps -FilePath $env:ComSpec -ArgumentList "/c """"$FilePath"" -el -qedit $args""" -Verb RunAs -PassThru
         $p.WaitForExit()
     }
