@@ -1,8 +1,10 @@
 # This script is hosted on <b>https://get.activated.win</b> for <b>https://massgrave.dev</b><hr><pre>
 
 if (-not $args) {
+    Write-Host ''
     Write-Host 'Need help? Check our homepage: ' -NoNewline
     Write-Host 'https://massgrave.dev' -ForegroundColor Green
+    Write-Host ''
 }
 
 & {
@@ -70,7 +72,7 @@ if (-not $args) {
             $errors += $_
         }
     }
-    Write-Progress -Activity "Downloading..." -Completed
+    Write-Progress -Activity "Downloading..." -Status "Done" -Completed
 
     if (-not $response) {
         Check3rdAV
@@ -116,14 +118,15 @@ if (-not $args) {
     if ($chkcmd -notcontains "CMD is working") {
         Write-Warning "cmd.exe is not working.`nReport this issue at $troubleshoot"
     }
-    saps -FilePath $env:ComSpec -ArgumentList "/c """"$FilePath"" -el $args""" -verb runas -Wait
-    CheckFile $FilePath
 
     if ($psv -lt 3) {
-        write-host ""
-        write-host "Press any key to exit when process is done..."
-        [void][System.Console]::ReadKey($true)
+        $p = saps -FilePath $env:ComSpec -ArgumentList "/c """"$FilePath"" -el $args""" -Verb RunAs -PassThru
+        $p.WaitForExit()
     }
+    else {
+        saps -FilePath $env:ComSpec -ArgumentList "/c """"$FilePath"" -el $args""" -Wait -Verb RunAs
+    }	
+    CheckFile $FilePath
 
     $FilePaths = @("$env:SystemRoot\Temp\MAS*.cmd", "$env:USERPROFILE\AppData\Local\Temp\MAS*.cmd")
     foreach ($FilePath in $FilePaths) { Get-Item $FilePath -ErrorAction SilentlyContinue | Remove-Item }
